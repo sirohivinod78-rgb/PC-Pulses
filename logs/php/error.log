@@ -1,0 +1,2 @@
+[27-Feb-2025 08:32:38 UTC] PHP Warning:  Undefined array key "errorMessage" in C:\Users\Vinod Sirohi\Local Sites\pcpulses\app\public\wp-content\plugins\envato-elements\inc\api\class-requirements.php on line 102
+[27-Feb-2025 09:05:55 UTC] PHP Warning:  Attempt to read property "title" on null in C:\Users\Vinod Sirohi\Local Sites\pcpulses\app\public\wp-includes\class-wp-customize-widgets.php on line 923
