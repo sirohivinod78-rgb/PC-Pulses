@@ -153,6 +153,23 @@ if ( ! function_exists( 'hello_elementor_scripts_styles' ) ) {
 }
 add_action( 'wp_enqueue_scripts', 'hello_elementor_scripts_styles' );
 
+if ( ! function_exists( 'hello_elementor_custom_button_styles' ) ) {
+	/**
+	 * Enqueue custom CSS to override Elementor button styles.
+	 *
+	 * @return void
+	 */
+	function hello_elementor_custom_button_styles() {
+		wp_enqueue_style(
+			'hello-elementor-custom-override',
+			get_template_directory_uri() . '/custom-override.css',
+			[],
+			HELLO_ELEMENTOR_VERSION
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'hello_elementor_custom_button_styles', 20 );
+
 if ( ! function_exists( 'hello_elementor_register_elementor_locations' ) ) {
 	/**
 	 * Register Elementor Locations.
@@ -281,3 +298,89 @@ function hello_elementor_get_theme_notifications(): ThemeNotifications {
 }
 
 hello_elementor_get_theme_notifications();
+
+/**
+ * PC Builder Enqueue Scripts and Styles
+ */
+if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
+	function hello_elementor_pc_builder_scripts() {
+		// Only load on PC Builder page
+		if ( ! is_page_template( 'template-pc-builder.php' ) ) {
+			return;
+		}
+
+		// Enqueue PC Builder CSS
+		wp_enqueue_style(
+			'hello-elementor-pc-builder',
+			get_template_directory_uri() . '/pc-builder.css',
+			[],
+			HELLO_ELEMENTOR_VERSION
+		);
+
+		// Load component data
+		$data = require get_template_directory() . '/pc-builder-data.php';
+
+		// Enqueue PC Builder JS
+		wp_enqueue_script(
+			'hello-elementor-pc-builder',
+			get_template_directory_uri() . '/pc-builder.js',
+			[],
+			HELLO_ELEMENTOR_VERSION,
+			true
+		);
+
+		// Pass component data to JavaScript
+		wp_localize_script(
+			'hello-elementor-pc-builder',
+			'pcBuilderComponents',
+			$data
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'hello_elementor_pc_builder_scripts', 20 );
+
+/**
+ * Add global JavaScript functions for PC Builder
+ */
+if ( ! function_exists( 'hello_elementor_pc_builder_inline_script' ) ) {
+	function hello_elementor_pc_builder_inline_script() {
+		if ( ! is_page_template( 'template-pc-builder.php' ) ) {
+			return;
+		}
+		?>
+		<script>
+		function exportBuild() {
+			if (window.pcBuilder) {
+				const buildData = window.pcBuilder.exportBuild();
+				const element = document.createElement("a");
+				element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(buildData));
+				element.setAttribute("download", "pc-build-" + new Date().toISOString().split('T')[0] + ".json");
+				element.style.display = "none";
+				document.body.appendChild(element);
+				element.click();
+				document.body.removeChild(element);
+				alert("Build exported successfully!");
+			}
+		}
+
+		function resetBuild() {
+			if (window.pcBuilder && confirm("Are you sure you want to reset your build? This cannot be undone.")) {
+				window.pcBuilder.resetBuild();
+			}
+		}
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_footer', 'hello_elementor_pc_builder_inline_script' );
+
+/**
+ * Register PC Builder as a page template option
+ */
+if ( ! function_exists( 'hello_elementor_register_custom_templates' ) ) {
+	function hello_elementor_register_custom_templates( $templates ) {
+		$templates['template-pc-builder.php'] = 'PC Builder';
+		return $templates;
+	}
+}
+add_filter( 'theme_page_templates', 'hello_elementor_register_custom_templates' );
