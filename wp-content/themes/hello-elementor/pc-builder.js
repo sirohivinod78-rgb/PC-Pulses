@@ -8,6 +8,7 @@ class PCBuilder {
         this.components = componentsData;
         this.selectedBuild = {};
         this.compatibilityIssues = [];
+        this.compatibilitySuggestions = [];
         this.init();
     }
 
@@ -118,7 +119,7 @@ class PCBuilder {
     }
 
     updateCategoryUI(categoryKey) {
-        const cards = document.querySelectorAll(`[data-category-key="${categoryKey}"] .component-card`);
+        const cards = document.querySelectorAll(`.component-card[data-category-key="${categoryKey}"]`);
         cards.forEach(card => {
             const selectedId = this.selectedBuild[categoryKey]?.id;
             const isSelected = card.dataset.componentId === selectedId;
@@ -135,6 +136,7 @@ class PCBuilder {
 
     checkCompatibility() {
         this.compatibilityIssues = [];
+        this.compatibilitySuggestions = [];
 
         // CPU Socket Compatibility
         const cpu = this.selectedBuild.cpu;
@@ -145,6 +147,10 @@ class PCBuilder {
                 level: 'error',
                 message: `CPU Socket Mismatch: ${cpu.socket} CPU requires ${cpu.socket} socket, but motherboard has ${motherboard.socket}`
             });
+            const compatibleMotherboards = this.components.motherboard.components.filter(mb => mb.socket === cpu.socket).map(mb => mb.name);
+            if (compatibleMotherboards.length) {
+                this.compatibilitySuggestions.push(`Choose a motherboard that supports ${cpu.socket}: ${compatibleMotherboards.join(', ')}.`);
+            }
         }
 
         // RAM Type Compatibility
@@ -154,6 +160,10 @@ class PCBuilder {
                 level: 'error',
                 message: `RAM Compatibility Issue: Motherboard supports ${motherboard.ram_type}, but you selected ${ram.type}`
             });
+            const compatibleRam = this.components.ram.components.filter(mem => mem.type === motherboard.ram_type).map(mem => mem.name);
+            if (compatibleRam.length) {
+                this.compatibilitySuggestions.push(`Select RAM compatible with ${motherboard.ram_type}: ${compatibleRam.join(', ')}.`);
+            }
         }
 
         // Power Supply Wattage Check
@@ -168,6 +178,10 @@ class PCBuilder {
                 level: 'warning',
                 message: `PSU Capacity Warning: Your build requires ~${Math.round(totalPower)}W, but PSU is ${psu.wattage}W. Consider upgrading for stability.`
             });
+            const higherPsu = this.components.psu.components.filter(power => power.wattage >= Math.ceil(totalPower * 1.2)).map(power => power.name);
+            if (higherPsu.length) {
+                this.compatibilitySuggestions.push(`Upgrade to a stronger PSU: ${higherPsu.join(', ')}.`);
+            }
         }
 
         // CPU Cooler Socket Support
@@ -179,6 +193,10 @@ class PCBuilder {
                     level: 'error',
                     message: `Cooler Compatibility: Selected cooler doesn't support ${cpu.socket} socket`
                 });
+                const compatibleCoolers = this.components.cooling.components.filter(cool => cool.socket_support.includes(cpu.socket)).map(cool => cool.name);
+                if (compatibleCoolers.length) {
+                    this.compatibilitySuggestions.push(`Swap to a cooler that supports ${cpu.socket}: ${compatibleCoolers.join(', ')}.`);
+                }
             }
         }
 
@@ -205,6 +223,16 @@ class PCBuilder {
             `;
             warningContainer.appendChild(warning);
         });
+
+        if (this.compatibilitySuggestions.length > 0) {
+            const suggestionBlock = document.createElement('div');
+            suggestionBlock.className = 'compatibility-suggestions';
+            suggestionBlock.innerHTML = `
+                <div class="suggestions-title">Suggested Fixes</div>
+                <ul>${this.compatibilitySuggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}</ul>
+            `;
+            warningContainer.appendChild(suggestionBlock);
+        }
     }
 
     updateBuildSummary() {
@@ -249,7 +277,7 @@ class PCBuilder {
             progressBar.style.width = progress + '%';
         }
 
-        const progressText = document.querySelector('.progress-text');
+        const progressText = document.querySelector('.progress-value');
         if (progressText) {
             progressText.textContent = `${itemCount}/${totalCategories} Components Selected`;
         }

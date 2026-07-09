@@ -57,6 +57,9 @@ $header_mobile_nav_menu = wp_nav_menu( $menu_args ); // The same menu but separa
 				?>
 			</nav>
 		<?php endif; ?>
+		<a href="<?php echo esc_url( home_url( '/pc-builder/' ) ); ?>" class="pc-builder-cta">
+			<?php echo esc_html__( 'Build Your PC', 'hello-elementor' ); ?>
+		</a>
 		<?php if ( $header_mobile_nav_menu ) : ?>
 			<div class="site-navigation-toggle-holder <?php echo esc_attr( hello_show_or_hide( 'hello_header_menu_display' ) ); ?>">
 				<button type="button" class="site-navigation-toggle" aria-label="<?php echo esc_attr( 'Menu', 'hello-elementor' ); ?>">

@@ -161,4 +161,34 @@ article,
         -18px 18px 35px rgba(255, 66, 85, 0.2);
 }
 
+.pc-builder-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #FF4255;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    border: 1px solid transparent;
+    margin-left: 18px;
+}
+
+.pc-builder-cta:hover,
+.pc-builder-cta:focus {
+    background: #e63f54;
+    box-shadow: 0 10px 22px rgba(255, 66, 85, 0.2);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .pc-builder-cta {
+        width: 100%;
+        margin: 18px 0 0;
+    }
+}
+
 

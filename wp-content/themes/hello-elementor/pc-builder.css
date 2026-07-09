@@ -12,6 +12,7 @@
 }
 
 /* Component Categories */
+#pc-builder-components,
 .pc-builder-components {
     display: flex;
     flex-direction: column;

@@ -47,4 +47,7 @@ $header_nav_menu = wp_nav_menu( [
 			?>
 		</nav>
 	<?php endif; ?>
+	<a href="<?php echo esc_url( home_url( '/pc-builder/' ) ); ?>" class="pc-builder-cta">
+		<?php echo esc_html__( 'Build Your PC', 'hello-elementor' ); ?>
+	</a>
 </header>

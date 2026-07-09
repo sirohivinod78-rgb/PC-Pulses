@@ -304,8 +304,8 @@ hello_elementor_get_theme_notifications();
  */
 if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 	function hello_elementor_pc_builder_scripts() {
-		// Only load on PC Builder page
-		if ( ! is_page_template( 'template-pc-builder.php' ) ) {
+		// Only load on the PC Builder page or custom route.
+		if ( ! is_page_template( 'template-pc-builder.php' ) && intval( get_query_var( 'pc_builder_page', 0 ) ) !== 1 ) {
 			return;
 		}
 
@@ -329,6 +329,15 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 			true
 		);
 
+		// Load link redirect script for Build Your PC buttons
+		wp_enqueue_script(
+			'hello-elementor-pc-builder-link',
+			get_template_directory_uri() . '/pc-builder-link.js',
+			[],
+			HELLO_ELEMENTOR_VERSION,
+			true
+		);
+
 		// Pass component data to JavaScript
 		wp_localize_script(
 			'hello-elementor-pc-builder',
@@ -340,11 +349,41 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 add_action( 'wp_enqueue_scripts', 'hello_elementor_pc_builder_scripts', 20 );
 
 /**
+ * Add PC Builder route for a /pc-builder/ landing URL.
+ */
+if ( ! function_exists( 'hello_elementor_pc_builder_rewrite_rule' ) ) {
+	function hello_elementor_pc_builder_rewrite_rule() {
+		add_rewrite_rule( '^pc-builder/?$', 'index.php?pc_builder_page=1', 'top' );
+	}
+}
+
+if ( ! function_exists( 'hello_elementor_pc_builder_query_vars' ) ) {
+	function hello_elementor_pc_builder_query_vars( $vars ) {
+		$vars[] = 'pc_builder_page';
+		return $vars;
+	}
+}
+
+if ( ! function_exists( 'hello_elementor_pc_builder_template' ) ) {
+	function hello_elementor_pc_builder_template( $template ) {
+		if ( intval( get_query_var( 'pc_builder_page', 0 ) ) === 1 ) {
+			return get_template_directory() . '/template-pc-builder.php';
+		}
+		return $template;
+	}
+}
+
+add_action( 'init', 'hello_elementor_pc_builder_rewrite_rule' );
+add_filter( 'query_vars', 'hello_elementor_pc_builder_query_vars' );
+add_filter( 'template_include', 'hello_elementor_pc_builder_template', 99 );
+add_action( 'after_switch_theme', 'flush_rewrite_rules' );
+
+/**
  * Add global JavaScript functions for PC Builder
  */
 if ( ! function_exists( 'hello_elementor_pc_builder_inline_script' ) ) {
 	function hello_elementor_pc_builder_inline_script() {
-		if ( ! is_page_template( 'template-pc-builder.php' ) ) {
+		if ( ! is_page_template( 'template-pc-builder.php' ) && intval( get_query_var( 'pc_builder_page', 0 ) ) !== 1 ) {
 			return;
 		}
 		?>

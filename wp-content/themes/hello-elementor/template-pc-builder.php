@@ -20,7 +20,7 @@ get_header();
             <!-- Main Component Selection Area -->
             <div class="pc-builder-left">
                 <div id="compatibility-warnings"></div>
-                <div id="pc-builder-components"></div>
+                <div id="pc-builder-components" class="pc-builder-components"></div>
             </div>
 
             <!-- Build Summary Sidebar -->
@@ -33,7 +33,7 @@ get_header();
                     <div class="progress-bar">
                         <div class="progress-bar-fill"></div>
                     </div>
-                    <div class="progress-text" style="text-align: center; font-weight: bold; color: #272B36;"></div>
+                    <div class="progress-value" style="text-align: center; font-weight: bold; color: #272B36;"></div>
                 </div>
 
                 <!-- Selected Components -->
