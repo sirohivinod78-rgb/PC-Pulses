@@ -13,7 +13,11 @@ get_header();
     <main class="pc-builder-main">
         <div class="pc-builder-header">
             <h1>Custom PC Builder</h1>
-            <p>Build your perfect PC step by step. Select components that work together perfectly.</p>
+            <div class="pc-builder-breadcrumb" aria-label="Breadcrumb">
+                <span>Home</span>
+                <span class="pc-builder-breadcrumb-separator" aria-hidden="true">&gt;</span>
+                <span>PC Builder</span>
+            </div>
         </div>
 
         <div class="pc-builder-container">
@@ -96,9 +100,14 @@ get_footer();
     }
 
     .pc-builder-header {
-        background: linear-gradient(135deg, #272B36 0%, #FF4255 100%);
+        position: relative;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('http://pcpulses.local/wp-content/uploads/2025/02/architect-team-discussing-on-blueprints.jpg');
+        background-position: center 51%;
+        background-repeat: no-repeat;
+        background-size: cover;
         color: white;
-        padding: 50px 40px;
+        margin-top: -96px;
+        padding: 196px 40px 100px;
         text-align: center;
         margin-bottom: 40px;
     }
@@ -114,6 +123,22 @@ get_footer();
         font-size: 18px;
         margin: 0;
         opacity: 0.95;
+    }
+
+    .pc-builder-breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+
+    .pc-builder-breadcrumb-separator {
+        color: #FF4255;
+        font-size: 20px;
+        line-height: 1;
     }
 
     .pc-builder-left {
@@ -181,7 +206,7 @@ get_footer();
 
     @media (max-width: 768px) {
         .pc-builder-header {
-            padding: 30px 20px;
+            padding: 100px 20px 60px;
         }
 
         .pc-builder-header h1 {

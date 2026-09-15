@@ -191,6 +191,18 @@ article,
     transform: translateY(-1px);
 }
 
+.pc-builder-page .pc-builder-cta,
+.pc-builder-page .elementor-location-header .elementor-element-19ab8f28 {
+    display: none !important;
+}
+
+.pc-builder-page button,
+.pc-builder-page input[type="button"],
+.pc-builder-page input[type="submit"],
+.pc-builder-page a.button {
+    border-radius: 8px !important;
+}
+
 @media (max-width: 768px) {
     .pc-builder-cta {
         width: 100%;

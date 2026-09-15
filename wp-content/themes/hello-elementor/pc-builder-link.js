@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         event.preventDefault();
-        window.location.assign(redirectTarget);
+        window.open(redirectTarget, '_blank', 'noopener,noreferrer');
     });
 
     markBuildButtons();

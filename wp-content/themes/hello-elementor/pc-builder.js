@@ -50,6 +50,23 @@ class PCBuilder {
         return section;
     }
 
+    getComponentImage(categoryKey, component) {
+        const labels = { cpu: 'CPU', motherboard: 'MOTHERBOARD', gpu: 'GPU', ram: 'RAM', storage: 'SSD', psu: 'POWER', case: 'CASE', cooling: 'COOLING' };
+        const label = labels[categoryKey] || 'HARDWARE';
+        const art = {
+            cpu: '<rect x="103" y="30" width="94" height="94" rx="14" fill="url(#silver)"/><rect x="116" y="43" width="68" height="68" rx="9" fill="#202532"/><circle cx="150" cy="77" r="23" fill="url(#cyan)"/><path d="M96 48H80M96 72H80M96 96H80M204 48h16M204 72h16M204 96h16M120 24V10M150 24V10M180 24V10M120 130v14M150 130v14M180 130v14" stroke="#eaf7ff" stroke-width="5" stroke-linecap="round"/>',
+            motherboard: '<rect x="82" y="20" width="136" height="120" rx="10" fill="url(#board)"/><rect x="101" y="38" width="43" height="37" rx="5" fill="#17202d" stroke="#61d8ad" stroke-width="3"/><rect x="159" y="38" width="39" height="10" rx="3" fill="#a7f3d0"/><rect x="159" y="55" width="39" height="10" rx="3" fill="#61d8ad"/><path d="M101 91h97M101 108h62M145 75v40M82 82h19M198 82h20" stroke="#61d8ad" stroke-width="4"/>',
+            gpu: '<rect x="38" y="48" width="184" height="65" rx="12" fill="url(#gpu)"/><circle cx="88" cy="80" r="22" fill="#161c29" stroke="#8be9ff" stroke-width="4"/><circle cx="88" cy="80" r="8" fill="#8be9ff"/><circle cx="164" cy="80" r="22" fill="#161c29" stroke="#8be9ff" stroke-width="4"/><circle cx="164" cy="80" r="8" fill="#8be9ff"/><path d="M222 63h30v34h-30" stroke="#ff6577" stroke-width="5"/>',
+            ram: '<rect x="58" y="45" width="184" height="31" rx="7" fill="url(#ram)"/><rect x="58" y="91" width="184" height="31" rx="7" fill="url(#ram)"/><path d="M79 76v14M107 76v14M135 76v14M163 76v14M191 76v14M219 76v14M79 122v15M107 122v15M135 122v15M163 122v15M191 122v15M219 122v15" stroke="#f7d774" stroke-width="4"/>',
+            storage: '<rect x="92" y="20" width="116" height="121" rx="13" fill="url(#silver)"/><rect x="106" y="35" width="88" height="90" rx="8" fill="#202532"/><circle cx="150" cy="77" r="28" fill="none" stroke="#8be9ff" stroke-width="7"/><circle cx="150" cy="77" r="8" fill="#ff6577"/><path d="M116 116h68" stroke="#8be9ff" stroke-width="4"/>',
+            psu: '<rect x="62" y="36" width="176" height="93" rx="12" fill="url(#silver)"/><circle cx="115" cy="82" r="29" fill="#202532" stroke="#8be9ff" stroke-width="4"/><circle cx="115" cy="82" r="11" fill="#8be9ff"/><path d="M165 61h46M165 78h46M165 95h34M82 129v12M104 129v12M194 129v12" stroke="#ff6577" stroke-width="5" stroke-linecap="round"/>',
+            case: '<rect x="104" y="14" width="92" height="135" rx="12" fill="url(#case)"/><rect x="118" y="29" width="64" height="66" rx="7" fill="#162333" opacity=".9"/><circle cx="150" cy="116" r="20" fill="none" stroke="#8be9ff" stroke-width="6"/><path d="M127 137h46" stroke="#ff6577" stroke-width="5" stroke-linecap="round"/>',
+            cooling: '<circle cx="150" cy="81" r="55" fill="url(#silver)"/><circle cx="150" cy="81" r="42" fill="#202532" stroke="#8be9ff" stroke-width="4"/><path d="M150 70c-35-39-48 10-13 20M161 81c39-35-10-48-20-13M150 92c35 39 48-10 13-20M139 81c-39 35 10 48 20 13" fill="#8be9ff" opacity=".85"/><circle cx="150" cy="81" r="11" fill="#ff6577"/>'
+        };
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 166" role="img" aria-label="${label} illustration"><defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#171c28"/><stop offset="1" stop-color="#3f485a"/></linearGradient><linearGradient id="silver" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f4f7fb"/><stop offset=".45" stop-color="#9ca8b8"/><stop offset="1" stop-color="#566273"/></linearGradient><linearGradient id="cyan" x1="0" x2="1"><stop stop-color="#47d7e8"/><stop offset="1" stop-color="#8be9ff"/></linearGradient><linearGradient id="board" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#123d46"/><stop offset="1" stop-color="#17624f"/></linearGradient><linearGradient id="gpu" x1="0" x2="1"><stop stop-color="#252b3a"/><stop offset="1" stop-color="#5b314f"/></linearGradient><linearGradient id="ram" x1="0" x2="1"><stop stop-color="#233c72"/><stop offset="1" stop-color="#a33d69"/></linearGradient><linearGradient id="case" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#37445d"/><stop offset="1" stop-color="#111827"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="300" height="166" fill="url(#bg)"/><circle cx="45" cy="28" r="38" fill="#ff4255" opacity=".13"/><circle cx="258" cy="140" r="55" fill="#5de1ef" opacity=".1"/><g filter="url(#glow)">${art[categoryKey] || art.cpu}</g><text x="150" y="158" fill="#ffffff" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="2" text-anchor="middle">${label}</text></svg>`;
+        return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+    }
+
     createComponentCard(categoryKey, component) {
         const card = document.createElement('div');
         card.className = 'component-card';
@@ -63,7 +80,7 @@ class PCBuilder {
 
         card.innerHTML = `
             <div class="component-image">
-                <img src="${component.image}" alt="${component.name}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                <img src="${this.getComponentImage(categoryKey, component)}" alt="${component.name}">
             </div>
             <div class="component-info">
                 <h4 class="component-name">${component.name}</h4>

@@ -377,7 +377,7 @@ if ( ! function_exists( 'hello_elementor_pc_builder_global_click_handler' ) ) {
 				return;
 			}
 			event.preventDefault();
-			window.location.assign(<?php echo wp_json_encode( $builder_url ); ?>);
+			window.open(<?php echo wp_json_encode( $builder_url ); ?>, '_blank', 'noopener,noreferrer');
 		});
 		</script>
 		<?php
@@ -413,6 +413,7 @@ if ( ! function_exists( 'hello_elementor_pc_builder_cta_content_link' ) ) {
 	}
 }
 add_filter( 'the_content', 'hello_elementor_pc_builder_cta_content_link', 20 );
+add_filter( 'elementor/frontend/the_content', 'hello_elementor_pc_builder_cta_content_link', 20 );
 
 /**
  * Add PC Builder route for a /pc-builder/ landing URL.
@@ -478,6 +479,16 @@ if ( ! function_exists( 'hello_elementor_pc_builder_inline_script' ) ) {
 	}
 }
 add_action( 'wp_footer', 'hello_elementor_pc_builder_inline_script' );
+
+if ( ! function_exists( 'hello_elementor_pc_builder_body_class' ) ) {
+	function hello_elementor_pc_builder_body_class( $classes ) {
+		if ( is_page_template( 'template-pc-builder.php' ) || intval( get_query_var( 'pc_builder_page', 0 ) ) === 1 ) {
+			$classes[] = 'pc-builder-page';
+		}
+		return $classes;
+	}
+}
+add_filter( 'body_class', 'hello_elementor_pc_builder_body_class' );
 
 /**
  * Register PC Builder as a page template option
