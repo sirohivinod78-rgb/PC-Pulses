@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const redirectTarget = '/pc-builder/';
+    const redirectTarget = window.pcBuilderLink?.url || '/?pc_builder_page=1';
     const matchesBuildButton = (text) => {
         if (!text) {
             return false;
@@ -8,27 +8,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return normalized === 'Build Your PC' || normalized.includes('Build Your PC');
     };
 
-    const elements = Array.from(document.querySelectorAll('a, button'));
-    elements.forEach((element) => {
-        const text = element.textContent || '';
-        if (!matchesBuildButton(text)) {
+    const markBuildButtons = () => {
+        document.querySelectorAll('a, button').forEach((element) => {
+            if (matchesBuildButton(element.textContent || '')) {
+                element.classList.add('pc-builder-text-yellow');
+                element.style.cursor = 'pointer';
+            }
+        });
+    };
+
+    document.addEventListener('click', (event) => {
+        const element = event.target.closest('a, button');
+        if (!element || !matchesBuildButton(element.textContent || '')) {
             return;
         }
 
-        if (element.tagName === 'A') {
-            element.setAttribute('href', redirectTarget);
-            element.setAttribute('aria-label', 'Build Your PC');
-            element.addEventListener('click', (event) => {
-                if (!element.href || element.href.endsWith('#')) {
-                    event.preventDefault();
-                    window.location.href = redirectTarget;
-                }
-            });
-        } else {
-            element.addEventListener('click', () => {
-                window.location.href = redirectTarget;
-            });
-            element.style.cursor = 'pointer';
-        }
+        event.preventDefault();
+        window.location.assign(redirectTarget);
     });
+
+    markBuildButtons();
+    new MutationObserver(markBuildButtons).observe(document.body, { childList: true, subtree: true });
 });

@@ -329,15 +329,6 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 			true
 		);
 
-		// Load link redirect script for Build Your PC buttons
-		wp_enqueue_script(
-			'hello-elementor-pc-builder-link',
-			get_template_directory_uri() . '/pc-builder-link.js',
-			[],
-			HELLO_ELEMENTOR_VERSION,
-			true
-		);
-
 		// Pass component data to JavaScript
 		wp_localize_script(
 			'hello-elementor-pc-builder',
@@ -347,6 +338,81 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'hello_elementor_pc_builder_scripts', 20 );
+
+/**
+ * Make existing Build Your PC buttons open the builder from any page.
+ */
+if ( ! function_exists( 'hello_elementor_pc_builder_link_script' ) ) {
+	function hello_elementor_pc_builder_link_script() {
+		wp_enqueue_script(
+			'hello-elementor-pc-builder-link',
+			get_template_directory_uri() . '/pc-builder-link.js',
+			[],
+			HELLO_ELEMENTOR_VERSION,
+			false
+		);
+
+		wp_localize_script(
+			'hello-elementor-pc-builder-link',
+			'pcBuilderLink',
+			[
+				'url' => home_url( '/?pc_builder_page=1' ),
+			]
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'hello_elementor_pc_builder_link_script', 20 );
+
+/**
+ * Wire the existing Elementor Build Your PC CTA on every frontend page.
+ */
+if ( ! function_exists( 'hello_elementor_pc_builder_global_click_handler' ) ) {
+	function hello_elementor_pc_builder_global_click_handler() {
+		$builder_url = home_url( '/?pc_builder_page=1' );
+		?>
+		<script>
+		document.addEventListener('click', function (event) {
+			const element = event.target.closest('a, button');
+			if (!element || !(element.textContent || '').includes('Build Your PC')) {
+				return;
+			}
+			event.preventDefault();
+			window.location.assign(<?php echo wp_json_encode( $builder_url ); ?>);
+		});
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_head', 'hello_elementor_pc_builder_global_click_handler', 100 );
+
+/**
+ * Replace the placeholder link on the existing Elementor CTA in rendered content.
+ */
+if ( ! function_exists( 'hello_elementor_pc_builder_cta_content_link' ) ) {
+	function hello_elementor_pc_builder_cta_content_link( $content ) {
+		if ( false === stripos( $content, 'Build Your PC' ) ) {
+			return $content;
+		}
+
+		$builder_url = esc_url( home_url( '/?pc_builder_page=1' ) );
+
+		return preg_replace_callback(
+			'/<a\b([^>]*)>(.*?)Build Your PC(.*?)<\/a>/is',
+			static function ( $match ) use ( $builder_url ) {
+				$attributes = preg_replace(
+					'/\s+href=(["\'])[^"\']*\1/i',
+					' href="' . $builder_url . '"',
+					$match[1],
+					1
+				);
+
+				return '<a' . $attributes . '>' . $match[2] . 'Build Your PC' . $match[3] . '</a>';
+			},
+			$content
+		);
+	}
+}
+add_filter( 'the_content', 'hello_elementor_pc_builder_cta_content_link', 20 );
 
 /**
  * Add PC Builder route for a /pc-builder/ landing URL.
