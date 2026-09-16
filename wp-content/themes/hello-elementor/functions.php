@@ -314,7 +314,7 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 			'hello-elementor-pc-builder',
 			get_template_directory_uri() . '/pc-builder.css',
 			[],
-			HELLO_ELEMENTOR_VERSION
+			filemtime( get_template_directory() . '/pc-builder.css' )
 		);
 
 		// Load component data
@@ -325,7 +325,7 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 			'hello-elementor-pc-builder',
 			get_template_directory_uri() . '/pc-builder.js',
 			[],
-			HELLO_ELEMENTOR_VERSION,
+			filemtime( get_template_directory() . '/pc-builder.js' ),
 			true
 		);
 

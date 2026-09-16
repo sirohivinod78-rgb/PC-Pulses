@@ -51,6 +51,10 @@ class PCBuilder {
     }
 
     getComponentImage(categoryKey, component) {
+        if (component.image) {
+            return component.image;
+        }
+
         const labels = { cpu: 'CPU', motherboard: 'MOTHERBOARD', gpu: 'GPU', ram: 'RAM', storage: 'SSD', psu: 'POWER', case: 'CASE', cooling: 'COOLING' };
         const label = labels[categoryKey] || 'HARDWARE';
         const art = {
@@ -80,7 +84,7 @@ class PCBuilder {
 
         card.innerHTML = `
             <div class="component-image">
-                <img src="${this.getComponentImage(categoryKey, component)}" alt="${component.name}">
+                <img src="${this.getComponentImage(categoryKey, component)}" alt="${component.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=No+Image';">
             </div>
             <div class="component-info">
                 <h4 class="component-name">${component.name}</h4>
