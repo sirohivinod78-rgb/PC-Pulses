@@ -61,9 +61,6 @@ class PCBuilder {
         }
 
         card.innerHTML = `
-            <div class="component-image">
-                <img src="${component.image}" alt="${component.name}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-            </div>
             <div class="component-info">
                 <h4 class="component-name">${component.name}</h4>
                 <ul class="component-specs">
