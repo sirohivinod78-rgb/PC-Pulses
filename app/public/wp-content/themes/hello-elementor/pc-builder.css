@@ -74,29 +74,18 @@
     color: white;
 }
 
-.component-image {
-    display: none !important;
-    width: 100%;
-    height: 150px;
-    margin: -12px -12px 10px -12px;
-    padding: 10px;
-    background: #ffffff;
-    border-bottom: 1px solid #edf0f4;
-    overflow: hidden;
-    border-radius: 6px;
+
+.component-card.not-compatible {
+    opacity: 0.58;
+    filter: grayscale(0.35);
+    border-style: dashed;
+    cursor: not-allowed;
 }
 
-.component-image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    object-position: center;
-    transition: transform 0.3s ease;
-}
-
-.component-card:hover .component-image img {
-    transform: scale(1.05);
+.component-card.not-compatible:hover {
+    border-color: #b9bec7;
+    box-shadow: none;
+    transform: none;
 }
 
 .component-info {
@@ -153,21 +142,50 @@
     color: white;
 }
 
-.select-btn {
+.pc-builder-main .select-btn {
     background: #FF4255;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    width: 50%;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 3px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
-    font-size: 11px;
+    font-size: 9px;
 }
 
 .select-btn:hover {
     background: #e63947;
     transform: scale(1.05);
+}
+
+.component-card.not-compatible .select-btn {
+    background: #8b919b;
+    cursor: not-allowed;
+}
+
+.component-card.not-compatible .select-btn:hover {
+    background: #777e89;
+    transform: none;
+}
+
+.compatibility-label {
+    display: none;
+    color: #7a4b00;
+    font-size: 10px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    text-transform: uppercase;
+}
+
+.component-card.not-compatible .compatibility-label {
+    display: block;
 }
 
 .component-card.selected .select-btn {
@@ -444,11 +462,6 @@
         padding: 12px;
     }
 
-    .component-image {
-        height: 140px;
-        margin: -12px -12px 12px -12px;
-    }
-
     .component-price {
         font-size: 16px;
     }
@@ -478,11 +491,6 @@
         padding: 10px;
     }
 
-    .component-image {
-        height: 100px;
-        margin: -10px -10px 10px -10px;
-    }
-
     .component-name {
         font-size: 12px;
     }
@@ -491,9 +499,9 @@
         font-size: 11px;
     }
 
-    .select-btn {
-        padding: 8px 12px;
-        font-size: 11px;
+    .pc-builder-main .select-btn {
+        padding: 4px 8px;
+        font-size: 9px;
     }
 
     #pc-builder-summary {

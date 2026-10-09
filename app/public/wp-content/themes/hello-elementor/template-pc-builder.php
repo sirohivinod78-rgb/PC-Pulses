@@ -101,8 +101,9 @@ get_footer();
 
     .pc-builder-header {
         position: relative;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('http://pcpulses.local/wp-content/uploads/2025/02/architect-team-discussing-on-blueprints.jpg');
-        background-position: center 51%;
+        background-color: #0f172a;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=1600&q=80');
+        background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
         color: white;

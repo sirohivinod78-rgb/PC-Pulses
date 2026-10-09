@@ -15,6 +15,7 @@ class PCBuilder {
     init() {
         this.renderComponentCategories();
         this.attachEventListeners();
+        this.updateCompatibilityUI();
         this.updateBuildSummary();
     }
 
@@ -50,27 +51,6 @@ class PCBuilder {
         return section;
     }
 
-    getComponentImage(categoryKey, component) {
-        if (component.image) {
-            return component.image;
-        }
-
-        const labels = { cpu: 'CPU', motherboard: 'MOTHERBOARD', gpu: 'GPU', ram: 'RAM', storage: 'SSD', psu: 'POWER', case: 'CASE', cooling: 'COOLING' };
-        const label = labels[categoryKey] || 'HARDWARE';
-        const art = {
-            cpu: '<rect x="103" y="30" width="94" height="94" rx="14" fill="url(#silver)"/><rect x="116" y="43" width="68" height="68" rx="9" fill="#202532"/><circle cx="150" cy="77" r="23" fill="url(#cyan)"/><path d="M96 48H80M96 72H80M96 96H80M204 48h16M204 72h16M204 96h16M120 24V10M150 24V10M180 24V10M120 130v14M150 130v14M180 130v14" stroke="#eaf7ff" stroke-width="5" stroke-linecap="round"/>',
-            motherboard: '<rect x="82" y="20" width="136" height="120" rx="10" fill="url(#board)"/><rect x="101" y="38" width="43" height="37" rx="5" fill="#17202d" stroke="#61d8ad" stroke-width="3"/><rect x="159" y="38" width="39" height="10" rx="3" fill="#a7f3d0"/><rect x="159" y="55" width="39" height="10" rx="3" fill="#61d8ad"/><path d="M101 91h97M101 108h62M145 75v40M82 82h19M198 82h20" stroke="#61d8ad" stroke-width="4"/>',
-            gpu: '<rect x="38" y="48" width="184" height="65" rx="12" fill="url(#gpu)"/><circle cx="88" cy="80" r="22" fill="#161c29" stroke="#8be9ff" stroke-width="4"/><circle cx="88" cy="80" r="8" fill="#8be9ff"/><circle cx="164" cy="80" r="22" fill="#161c29" stroke="#8be9ff" stroke-width="4"/><circle cx="164" cy="80" r="8" fill="#8be9ff"/><path d="M222 63h30v34h-30" stroke="#ff6577" stroke-width="5"/>',
-            ram: '<rect x="58" y="45" width="184" height="31" rx="7" fill="url(#ram)"/><rect x="58" y="91" width="184" height="31" rx="7" fill="url(#ram)"/><path d="M79 76v14M107 76v14M135 76v14M163 76v14M191 76v14M219 76v14M79 122v15M107 122v15M135 122v15M163 122v15M191 122v15M219 122v15" stroke="#f7d774" stroke-width="4"/>',
-            storage: '<rect x="92" y="20" width="116" height="121" rx="13" fill="url(#silver)"/><rect x="106" y="35" width="88" height="90" rx="8" fill="#202532"/><circle cx="150" cy="77" r="28" fill="none" stroke="#8be9ff" stroke-width="7"/><circle cx="150" cy="77" r="8" fill="#ff6577"/><path d="M116 116h68" stroke="#8be9ff" stroke-width="4"/>',
-            psu: '<rect x="62" y="36" width="176" height="93" rx="12" fill="url(#silver)"/><circle cx="115" cy="82" r="29" fill="#202532" stroke="#8be9ff" stroke-width="4"/><circle cx="115" cy="82" r="11" fill="#8be9ff"/><path d="M165 61h46M165 78h46M165 95h34M82 129v12M104 129v12M194 129v12" stroke="#ff6577" stroke-width="5" stroke-linecap="round"/>',
-            case: '<rect x="104" y="14" width="92" height="135" rx="12" fill="url(#case)"/><rect x="118" y="29" width="64" height="66" rx="7" fill="#162333" opacity=".9"/><circle cx="150" cy="116" r="20" fill="none" stroke="#8be9ff" stroke-width="6"/><path d="M127 137h46" stroke="#ff6577" stroke-width="5" stroke-linecap="round"/>',
-            cooling: '<circle cx="150" cy="81" r="55" fill="url(#silver)"/><circle cx="150" cy="81" r="42" fill="#202532" stroke="#8be9ff" stroke-width="4"/><path d="M150 70c-35-39-48 10-13 20M161 81c39-35-10-48-20-13M150 92c35 39 48-10 13-20M139 81c-39 35 10 48 20 13" fill="#8be9ff" opacity=".85"/><circle cx="150" cy="81" r="11" fill="#ff6577"/>'
-        };
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 166" role="img" aria-label="${label} illustration"><defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#171c28"/><stop offset="1" stop-color="#3f485a"/></linearGradient><linearGradient id="silver" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f4f7fb"/><stop offset=".45" stop-color="#9ca8b8"/><stop offset="1" stop-color="#566273"/></linearGradient><linearGradient id="cyan" x1="0" x2="1"><stop stop-color="#47d7e8"/><stop offset="1" stop-color="#8be9ff"/></linearGradient><linearGradient id="board" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#123d46"/><stop offset="1" stop-color="#17624f"/></linearGradient><linearGradient id="gpu" x1="0" x2="1"><stop stop-color="#252b3a"/><stop offset="1" stop-color="#5b314f"/></linearGradient><linearGradient id="ram" x1="0" x2="1"><stop stop-color="#233c72"/><stop offset="1" stop-color="#a33d69"/></linearGradient><linearGradient id="case" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#37445d"/><stop offset="1" stop-color="#111827"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="300" height="166" fill="url(#bg)"/><circle cx="45" cy="28" r="38" fill="#ff4255" opacity=".13"/><circle cx="258" cy="140" r="55" fill="#5de1ef" opacity=".1"/><g filter="url(#glow)">${art[categoryKey] || art.cpu}</g><text x="150" y="158" fill="#ffffff" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="2" text-anchor="middle">${label}</text></svg>`;
-        return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-    }
-
     createComponentCard(categoryKey, component) {
         const card = document.createElement('div');
         card.className = 'component-card';
@@ -78,8 +58,12 @@ class PCBuilder {
         card.dataset.categoryKey = categoryKey;
 
         const isSelected = this.selectedBuild[categoryKey]?.id === component.id;
+        const compatibility = this.getCompatibility(categoryKey, component);
         if (isSelected) {
             card.classList.add('selected');
+        }
+        if (!compatibility.compatible && !isSelected) {
+            card.classList.add('not-compatible');
         }
 
         card.innerHTML = `
@@ -90,7 +74,8 @@ class PCBuilder {
                 </ul>
                 <div class="component-price">$${component.price.toFixed(2)}</div>
             </div>
-            <button class="select-btn" data-component-id="${component.id}">
+            <div class="compatibility-label">Not Compatible</div>
+            <button class="select-btn" data-component-id="${component.id}" ${!compatibility.compatible && !isSelected ? 'disabled' : ''}>
                 ${isSelected ? 'Selected' : 'Select'}
             </button>
         `;
@@ -106,6 +91,10 @@ class PCBuilder {
                 const component = this.findComponent(componentId);
                 
                 if (component) {
+                    if (!this.getCompatibility(categoryKey, component).compatible) {
+                        this.showFriendlyMessage(categoryKey, component);
+                        return;
+                    }
                     this.selectComponent(categoryKey, component);
                 }
             }
@@ -121,11 +110,16 @@ class PCBuilder {
     }
 
     selectComponent(categoryKey, component) {
-        // Update selection
         this.selectedBuild[categoryKey] = component;
+        const clearedCategories = this.clearIncompatibleSelections();
+
+        if (clearedCategories.length) {
+            this.showSelectionResetMessage(categoryKey, clearedCategories);
+        }
 
         // Update UI
         this.updateCategoryUI(categoryKey);
+        this.updateCompatibilityUI();
         this.checkCompatibility();
         this.updateBuildSummary();
 
@@ -150,6 +144,89 @@ class PCBuilder {
                 card.querySelector('.select-btn').textContent = 'Select';
             }
         });
+    }
+
+    getRequiredWattage(build = this.selectedBuild) {
+        const cpuPower = build.cpu?.tdp || 0;
+        const gpuPower = build.gpu?.power_req || 0;
+        return Math.ceil((cpuPower + gpuPower + 150) * 1.2);
+    }
+
+    getCompatibility(categoryKey, component, build = this.selectedBuild) {
+        const cpu = build.cpu;
+        const motherboard = build.motherboard;
+        const reasons = [];
+
+        if (categoryKey === 'motherboard' && cpu && component.socket !== cpu.socket) {
+            reasons.push(`Choose a motherboard with the ${cpu.socket} socket for this CPU.`);
+        }
+        if (categoryKey === 'cpu' && motherboard && component.socket !== motherboard.socket) {
+            reasons.push(`This motherboard requires a ${motherboard.socket} CPU socket.`);
+        }
+        if (categoryKey === 'ram' && motherboard && component.type !== motherboard.ram_type) {
+            reasons.push(`This motherboard supports ${motherboard.ram_type} memory.`);
+        }
+        if (categoryKey === 'motherboard' && build.ram && component.ram_type !== build.ram.type) {
+            reasons.push(`Your selected RAM is ${build.ram.type}; choose a matching motherboard.`);
+        }
+        if (categoryKey === 'cooling' && cpu && !(component.socket_support || []).includes(cpu.socket)) {
+            reasons.push(`Choose a cooler that supports the ${cpu.socket} socket.`);
+        }
+        if (categoryKey === 'psu' && component.wattage < this.getRequiredWattage(build)) {
+            reasons.push(`Your build needs at least ${this.getRequiredWattage(build)}W of PSU capacity.`);
+        }
+        if (categoryKey === 'case' && motherboard && component.form_factor !== motherboard.form_factor) {
+            reasons.push(`Choose a case that supports the ${motherboard.form_factor} motherboard size.`);
+        }
+        if (categoryKey === 'gpu' && motherboard && component.pcie && motherboard.pcie_slots && !motherboard.pcie_slots.includes(component.pcie)) {
+            reasons.push(`This GPU needs a compatible PCIe slot on the motherboard.`);
+        }
+        if (categoryKey === 'storage' && motherboard && component.interface && motherboard.storage_interfaces && !motherboard.storage_interfaces.includes(component.interface)) {
+            reasons.push(`This motherboard does not have a matching ${component.interface} storage slot.`);
+        }
+
+        return { compatible: reasons.length === 0, reason: reasons[0] || '' };
+    }
+
+    updateCompatibilityUI() {
+        Object.entries(this.components).forEach(([categoryKey, categoryData]) => {
+            categoryData.components.forEach(component => {
+                const card = document.querySelector(`.component-card[data-category-key="${categoryKey}"][data-component-id="${component.id}"]`);
+                if (!card) return;
+                const button = card.querySelector('.select-btn');
+                const isSelected = this.selectedBuild[categoryKey]?.id === component.id;
+                const compatibility = this.getCompatibility(categoryKey, component);
+                card.classList.toggle('not-compatible', !compatibility.compatible && !isSelected);
+                card.classList.toggle('selected', isSelected);
+                button.disabled = !compatibility.compatible && !isSelected;
+                button.textContent = isSelected ? 'Selected' : 'Select';
+            });
+        });
+    }
+
+    clearIncompatibleSelections() {
+        const clearedCategories = [];
+        Object.entries(this.selectedBuild).forEach(([categoryKey, component]) => {
+            if (!this.getCompatibility(categoryKey, component).compatible) {
+                delete this.selectedBuild[categoryKey];
+                clearedCategories.push(this.components[categoryKey]?.category || categoryKey);
+            }
+        });
+        return clearedCategories;
+    }
+
+    showFriendlyMessage(categoryKey, component) {
+        const compatibility = this.getCompatibility(categoryKey, component);
+        const warningContainer = document.getElementById('compatibility-warnings');
+        if (!warningContainer) return;
+        warningContainer.innerHTML = `<div class="compatibility-warning error"><span class="warning-icon">⚠</span><span class="warning-text">${compatibility.reason || 'This component is not compatible with your current build. Please choose a compatible option.'}</span></div>`;
+        warningContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    showSelectionResetMessage(changedCategory, clearedCategories) {
+        const warningContainer = document.getElementById('compatibility-warnings');
+        if (!warningContainer) return;
+        warningContainer.innerHTML = `<div class="compatibility-warning warning"><span class="warning-icon">⚠</span><span class="warning-text">You changed your ${this.components[changedCategory]?.category || changedCategory}. Your ${clearedCategories.join(' and ')} selection${clearedCategories.length > 1 ? 's have' : ' has'} been cleared because ${clearedCategories.length > 1 ? 'they are' : 'it is'} not compatible. Please choose a compatible option.</span></div>`;
     }
 
     checkCompatibility() {

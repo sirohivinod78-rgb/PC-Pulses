@@ -65,6 +65,8 @@ return [
                 'socket' => 'LGA1700',
                 'ram_type' => 'DDR5',
                 'form_factor' => 'ATX',
+                'pcie_slots' => ['PCIe 4.0', 'PCIe 5.0'],
+                'storage_interfaces' => ['M.2 NVMe', 'SATA'],
                 'image' => 'https://via.placeholder.com/300x200?text=Z790+Mobo',
                 'specs' => ['LGA1700', 'DDR5', 'ATX']
             ],
@@ -75,6 +77,8 @@ return [
                 'socket' => 'LGA1700',
                 'ram_type' => 'DDR5',
                 'form_factor' => 'ATX',
+                'pcie_slots' => ['PCIe 4.0', 'PCIe 5.0'],
+                'storage_interfaces' => ['M.2 NVMe', 'SATA'],
                 'image' => 'https://via.placeholder.com/300x200?text=Z790+Pro',
                 'specs' => ['LGA1700', 'DDR5', 'ATX']
             ],
@@ -85,6 +89,8 @@ return [
                 'socket' => 'AM5',
                 'ram_type' => 'DDR5',
                 'form_factor' => 'ATX',
+                'pcie_slots' => ['PCIe 4.0', 'PCIe 5.0'],
+                'storage_interfaces' => ['M.2 NVMe', 'SATA'],
                 'image' => 'https://via.placeholder.com/300x200?text=B650E+Mobo',
                 'specs' => ['AM5', 'DDR5', 'ATX']
             ],
@@ -95,6 +101,8 @@ return [
                 'socket' => 'AM5',
                 'ram_type' => 'DDR5',
                 'form_factor' => 'ATX',
+                'pcie_slots' => ['PCIe 4.0', 'PCIe 5.0'],
+                'storage_interfaces' => ['M.2 NVMe', 'SATA'],
                 'image' => 'https://via.placeholder.com/300x200?text=X870+Mobo',
                 'specs' => ['AM5', 'DDR5', 'ATX']
             ]
@@ -109,6 +117,7 @@ return [
                 'price' => 599.99,
                 'vram' => 12,
                 'power_req' => 200,
+                'pcie' => 'PCIe 4.0',
                 'image' => 'https://via.placeholder.com/300x200?text=RTX+4070',
                 'specs' => ['12GB GDDR6X', '200W', 'PCIe 4.0']
             ],
@@ -118,6 +127,7 @@ return [
                 'price' => 1199.99,
                 'vram' => 16,
                 'power_req' => 320,
+                'pcie' => 'PCIe 4.0',
                 'image' => 'https://via.placeholder.com/300x200?text=RTX+4080',
                 'specs' => ['16GB GDDR6X', '320W', 'PCIe 4.0']
             ],
@@ -127,6 +137,7 @@ return [
                 'price' => 399.99,
                 'vram' => 12,
                 'power_req' => 250,
+                'pcie' => 'PCIe 4.0',
                 'image' => 'https://via.placeholder.com/300x200?text=RX7700',
                 'specs' => ['12GB GDDR6', '250W', 'PCIe 4.0']
             ],
@@ -136,6 +147,7 @@ return [
                 'price' => 799.99,
                 'vram' => 24,
                 'power_req' => 420,
+                'pcie' => 'PCIe 4.0',
                 'image' => 'https://via.placeholder.com/300x200?text=RX7900',
                 'specs' => ['24GB GDDR6', '420W', 'PCIe 4.0']
             ]
@@ -195,6 +207,7 @@ return [
                 'price' => 179.99,
                 'capacity' => 2,
                 'type' => 'NVMe SSD',
+                'interface' => 'M.2 NVMe',
                 'speed' => 7100,
                 'image' => 'https://via.placeholder.com/300x200?text=Samsung+2TB',
                 'specs' => ['2TB', 'NVMe Gen4', '7100MB/s']
@@ -205,6 +218,7 @@ return [
                 'price' => 89.99,
                 'capacity' => 1,
                 'type' => 'NVMe SSD',
+                'interface' => 'M.2 NVMe',
                 'speed' => 7100,
                 'image' => 'https://via.placeholder.com/300x200?text=WD+Black+1TB',
                 'specs' => ['1TB', 'NVMe Gen4', '7100MB/s']
@@ -215,6 +229,7 @@ return [
                 'price' => 79.99,
                 'capacity' => 4,
                 'type' => 'HDD',
+                'interface' => 'SATA',
                 'speed' => 0,
                 'image' => 'https://via.placeholder.com/300x200?text=Seagate+4TB',
                 'specs' => ['4TB', '3.5" HDD', '5400RPM']
@@ -225,6 +240,7 @@ return [
                 'price' => 159.99,
                 'capacity' => 2,
                 'type' => 'NVMe SSD',
+                'interface' => 'M.2 NVMe',
                 'speed' => 6600,
                 'image' => 'https://via.placeholder.com/300x200?text=Crucial+2TB',
                 'specs' => ['2TB', 'NVMe Gen4', '6600MB/s']
