@@ -81,84 +81,78 @@ article,
     border-radius: 8px !important;
 }
 
-/* ============================================
-   3D LOGO STYLING
-   ============================================ */
-
-/* Site logo container */
-.site-logo {
-    perspective: 1200px;
+/* Embossed logo treatment for WordPress and Elementor site headers */
+.site-header .site-logo img,
+.site-header .custom-logo-link img,
+.site-header img.custom-logo,
+.site-header .elementor-widget-theme-site-logo img,
+.site-header .elementor-widget-site-logo img,
+.site-header .elementor-widget-image img,
+.elementor-location-header .site-logo img,
+.elementor-location-header .custom-logo-link img,
+.elementor-location-header img.custom-logo,
+.elementor-location-header .elementor-widget-theme-site-logo img,
+.elementor-location-header .elementor-widget-site-logo img,
+.elementor-location-header .elementor-widget-image img,
+.site-footer .site-logo img,
+.site-footer .custom-logo-link img,
+.site-footer img.custom-logo,
+.site-footer .elementor-widget-theme-site-logo img,
+.site-footer .elementor-widget-site-logo img,
+.site-footer .elementor-widget-image img,
+.elementor-location-footer .site-logo img,
+.elementor-location-footer .custom-logo-link img,
+.elementor-location-footer img.custom-logo,
+.elementor-location-footer .elementor-widget-theme-site-logo img,
+.elementor-location-footer .elementor-widget-site-logo img,
+.elementor-location-footer .elementor-widget-image img {
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.7))
+            drop-shadow(4px 5px 4px rgba(0, 0, 0, 0.4)) !important;
+    transition: filter 0.25s ease, transform 0.25s ease;
 }
 
-/* 3D effect for site logo image */
-.site-logo img {
-    /* 3D Transform with enhanced depth */
-    transform: perspective(1200px) 
-               rotateX(8deg) 
-               rotateY(-12deg) 
-               rotateZ(2deg)
-               translateZ(50px);
-    transform-style: preserve-3d;
-    
-    /* Enhanced shadows for depth */
-    box-shadow: 
-        /* Outer shadow for depth */
-        0 30px 60px rgba(0, 0, 0, 0.3),
-        /* Mid shadow */
-        0 15px 35px rgba(0, 0, 0, 0.2),
-        /* Inner shadow for dimension */
-        inset -2px -2px 5px rgba(255, 255, 255, 0.2),
-        /* Accent shadow */
-        -15px 15px 30px rgba(255, 66, 85, 0.15);
-    
-    /* Drop shadow filter for additional depth */
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2))
-            drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.15));
-    
-    /* Smooth transitions */
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    
-    /* Additional styling */
-    border-radius: 8px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+.site-header .site-logo img:hover,
+.site-header .custom-logo-link img:hover,
+.site-header img.custom-logo:hover,
+.site-header .elementor-widget-theme-site-logo img:hover,
+.site-header .elementor-widget-site-logo img:hover,
+.site-header .elementor-widget-image img:hover,
+.elementor-location-header .site-logo img:hover,
+.elementor-location-header .custom-logo-link img:hover,
+.elementor-location-header img.custom-logo:hover,
+.elementor-location-header .elementor-widget-theme-site-logo img:hover,
+.elementor-location-header .elementor-widget-site-logo img:hover,
+.elementor-location-header .elementor-widget-image img:hover,
+.site-footer .site-logo img:hover,
+.site-footer .custom-logo-link img:hover,
+.site-footer img.custom-logo:hover,
+.site-footer .elementor-widget-theme-site-logo img:hover,
+.site-footer .elementor-widget-site-logo img:hover,
+.site-footer .elementor-widget-image img:hover,
+.elementor-location-footer .site-logo img:hover,
+.elementor-location-footer .custom-logo-link img:hover,
+.elementor-location-footer img.custom-logo:hover,
+.elementor-location-footer .elementor-widget-theme-site-logo img:hover,
+.elementor-location-footer .elementor-widget-site-logo img:hover,
+.elementor-location-footer .elementor-widget-image img:hover {
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.8))
+            drop-shadow(5px 6px 5px rgba(0, 0, 0, 0.45)) !important;
+    transform: translateY(-1px);
 }
 
-/* Hover state - enhance 3D effect */
-.site-logo img:hover {
-    /* Rotate and tilt on hover */
-    transform: perspective(1200px)
-               rotateX(0deg)
-               rotateY(0deg)
-               rotateZ(0deg)
-               translateZ(100px)
-               scale(1.08);
-    
-    /* Enhanced shadow on hover */
-    box-shadow: 
-        0 50px 100px rgba(0, 0, 0, 0.4),
-        0 25px 50px rgba(0, 0, 0, 0.3),
-        inset -2px -2px 8px rgba(255, 255, 255, 0.3),
-        -20px 20px 40px rgba(255, 66, 85, 0.25);
-    
-    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.3))
-            drop-shadow(10px 10px 25px rgba(0, 0, 0, 0.2));
-}
-
-/* Active/Click state */
-.site-logo img:active {
-    transform: perspective(1200px)
-               rotateX(5deg)
-               rotateY(-8deg)
-               rotateZ(1deg)
-               translateZ(70px)
-               scale(1.05);
-    
-    box-shadow: 
-        0 40px 80px rgba(0, 0, 0, 0.35),
-        0 20px 40px rgba(0, 0, 0, 0.25),
-        inset -2px -2px 6px rgba(255, 255, 255, 0.25),
-        -18px 18px 35px rgba(255, 66, 85, 0.2);
+/* Keep the PC Builder header logo embossed when page-specific styles apply. */
+.pc-builder-page .elementor-location-header .site-logo img,
+.pc-builder-page .elementor-location-header .custom-logo-link img,
+.pc-builder-page .elementor-location-header .elementor-widget-theme-site-logo img,
+.pc-builder-page .elementor-location-header .elementor-widget-site-logo img,
+.pc-builder-page .elementor-location-header .elementor-widget-image img,
+.pc-builder-page .site-header .site-logo img,
+.pc-builder-page .site-header .custom-logo-link img,
+.pc-builder-page .site-header .elementor-widget-theme-site-logo img,
+.pc-builder-page .site-header .elementor-widget-site-logo img,
+.pc-builder-page .site-header .elementor-widget-image img {
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.7))
+            drop-shadow(4px 5px 4px rgba(0, 0, 0, 0.4)) !important;
 }
 
 .pc-builder-cta {
@@ -203,4 +197,86 @@ article,
     }
 }
 
+/* Keep homepage Elementor backgrounds independent of the site's hostname. */
+.elementor-102 .elementor-element.elementor-element-18c322cd:not(.elementor-motion-effects-element-type-background),
+.elementor-102 .elementor-element.elementor-element-18c322cd:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap,
+.elementor-102 .elementor-element.elementor-element-18c322cd > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+.elementor-102 .elementor-element.elementor-element-18c322cd > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-image: url("../../uploads/2025/02/business-people-working-together.jpg");
+}
 
+.elementor-102 .elementor-element.elementor-element-3379b2ef:not(.elementor-motion-effects-element-type-background),
+.elementor-102 .elementor-element.elementor-element-3379b2ef:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap,
+.elementor-102 .elementor-element.elementor-element-3379b2ef > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+.elementor-102 .elementor-element.elementor-element-3379b2ef > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-image: url("../../uploads/2025/02/business-team-celebrating-with-raised-up-hands-.jpg");
+}
+
+.elementor-102 .elementor-element.elementor-element-4a4455f4:not(.elementor-motion-effects-element-type-background),
+.elementor-102 .elementor-element.elementor-element-4a4455f4:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap,
+.elementor-102 .elementor-element.elementor-element-4a4455f4 > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+.elementor-102 .elementor-element.elementor-element-4a4455f4 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-image: url("../../uploads/2025/02/worldmap-Q676QDA.png");
+}
+
+.elementor-102 .elementor-element.elementor-element-8154a1c:not(.elementor-motion-effects-element-type-background),
+.elementor-102 .elementor-element.elementor-element-8154a1c:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap,
+.elementor-102 .elementor-element.elementor-element-8154a1c > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+.elementor-102 .elementor-element.elementor-element-8154a1c > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-image: url("../../uploads/2025/02/team-of-engineers-working.jpg");
+}
+
+.elementor-102 .elementor-element.elementor-element-76cf95a0:not(.elementor-motion-effects-element-type-background),
+.elementor-102 .elementor-element.elementor-element-76cf95a0:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap,
+.elementor-102 .elementor-element.elementor-element-76cf95a0 > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+.elementor-102 .elementor-element.elementor-element-76cf95a0 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-image: url("../../uploads/2025/02/coworking-colleagues-having-conversation-at-workplace-1.jpg");
+}
+
+/* The homepage slideshow data still contains the previous local hostname. */
+.elementor-102 .elementor-element.elementor-element-2464c76b .elementor-background-slideshow__slide[data-swiper-slide-index="0"] .elementor-background-slideshow__slide__image {
+    background-image: url("/wp-content/uploads/2025/02/team-working-together-.jpg") !important;
+}
+
+.elementor-102 .elementor-element.elementor-element-2464c76b .elementor-background-slideshow__slide[data-swiper-slide-index="1"] .elementor-background-slideshow__slide__image {
+    background-image: url("/wp-content/uploads/2025/02/team-of-software-engineers-in-office.jpg") !important;
+}
+
+.elementor-102 .elementor-element.elementor-element-2464c76b .elementor-background-slideshow__slide[data-swiper-slide-index="2"] .elementor-background-slideshow__slide__image {
+    background-image: url("/wp-content/uploads/2025/02/teamwork-.jpg") !important;
+}
+
+/* Reduce the homepage hero height while keeping its content clear of the header. */
+.elementor-102 .elementor-element.elementor-element-2464c76b {
+    padding: 100px 0 84px !important;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .elementor-102 .elementor-element.elementor-element-2464c76b {
+        padding: 98px 10px 70px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .elementor-102 .elementor-element.elementor-element-2464c76b {
+        padding: 100px 10px 24px !important;
+    }
+
+    .elementor-102 .elementor-element.elementor-element-2464c76b .elementor-element-6f18e09a {
+        width: auto !important;
+        max-width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .elementor-102 .elementor-element.elementor-element-2464c76b .elementor-element-6f18e09a .elementor-heading-title {
+        font-size: 32px;
+    }
+
+    .elementor-102 .elementor-element.elementor-element-2464c76b .elementor-element-187323f6 {
+        margin-bottom: 12px;
+    }
+
+    .elementor-102 .elementor-element.elementor-element-2464c76b .elementor-element-187323f6 p {
+        font-size: 14px;
+    }
+}

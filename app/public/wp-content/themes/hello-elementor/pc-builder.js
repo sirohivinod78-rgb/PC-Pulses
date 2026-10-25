@@ -5,11 +5,22 @@
 
 class PCBuilder {
     constructor(componentsData) {
-        this.components = componentsData;
+        this.components = componentsData.categories || componentsData;
+        this.currency = componentsData.currency || 'INR';
+        this.priceNote = componentsData.price_note || '';
+        this.priceSources = componentsData.price_sources || [];
         this.selectedBuild = {};
         this.compatibilityIssues = [];
         this.compatibilitySuggestions = [];
         this.init();
+    }
+
+    formatPrice(price) {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: this.currency,
+            maximumFractionDigits: 0
+        }).format(price);
     }
 
     init() {
@@ -22,6 +33,22 @@ class PCBuilder {
     renderComponentCategories() {
         const container = document.getElementById('pc-builder-components');
         if (!container) return;
+
+        if (this.priceNote) {
+            const priceNote = document.createElement('p');
+            priceNote.className = 'pc-builder-price-note';
+            priceNote.textContent = this.priceNote;
+            this.priceSources.forEach(source => {
+                const separator = document.createTextNode(' ');
+                const link = document.createElement('a');
+                link.href = source.url;
+                link.textContent = source.name;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                priceNote.append(separator, link);
+            });
+            container.appendChild(priceNote);
+        }
 
         Object.entries(this.components).forEach(([categoryKey, categoryData]) => {
             const categorySection = this.createCategorySection(categoryKey, categoryData);
@@ -38,6 +65,36 @@ class PCBuilder {
         title.className = 'category-title';
         title.textContent = categoryData.category;
 
+        if (categoryData.description) {
+            const description = document.createElement('p');
+            description.className = 'category-description';
+            description.textContent = categoryData.description;
+            section.appendChild(description);
+        }
+
+        const filterControls = document.createElement('div');
+        filterControls.className = 'component-filters';
+        if (categoryData.components.length > 8) {
+            const search = document.createElement('input');
+            search.type = 'search';
+            search.className = 'component-search';
+            search.placeholder = `Search ${categoryData.category}`;
+            search.setAttribute('aria-label', `Search ${categoryData.category}`);
+            filterControls.appendChild(search);
+        }
+
+        if (categoryData.filter_key) {
+            const values = [...new Set(categoryData.components.map(component => component[categoryData.filter_key]).filter(Boolean))];
+            if (values.length > 1) {
+                const filter = document.createElement('select');
+                filter.className = 'component-filter';
+                filter.setAttribute('aria-label', `Filter ${categoryData.category}`);
+                filter.add(new Option('All options', ''));
+                values.forEach(value => filter.add(new Option(value, value)));
+                filterControls.appendChild(filter);
+            }
+        }
+
         const componentsGrid = document.createElement('div');
         componentsGrid.className = 'components-grid';
 
@@ -47,6 +104,9 @@ class PCBuilder {
         });
 
         section.appendChild(title);
+        if (filterControls.childElementCount) {
+            section.appendChild(filterControls);
+        }
         section.appendChild(componentsGrid);
         return section;
     }
@@ -72,7 +132,8 @@ class PCBuilder {
                 <ul class="component-specs">
                     ${component.specs.map(spec => `<li>${spec}</li>`).join('')}
                 </ul>
-                <div class="component-price">$${component.price.toFixed(2)}</div>
+                <div class="component-price">${this.formatPrice(component.price)}</div>
+                <a class="component-price-link" href="${component.price_url || `https://www.amazon.in/s?k=${encodeURIComponent(component.name)}`}" target="_blank" rel="noopener noreferrer">Check retailer price</a>
             </div>
             <div class="compatibility-label">Not Compatible</div>
             <button class="select-btn" data-component-id="${component.id}" ${!compatibility.compatible && !isSelected ? 'disabled' : ''}>
@@ -98,6 +159,32 @@ class PCBuilder {
                     this.selectComponent(categoryKey, component);
                 }
             }
+        });
+
+        document.addEventListener('input', (e) => {
+            if (e.target.matches('.component-search')) {
+                this.filterCategoryCards(e.target.closest('.pc-builder-category'));
+            }
+        });
+
+        document.addEventListener('change', (e) => {
+            if (e.target.matches('.component-filter')) {
+                this.filterCategoryCards(e.target.closest('.pc-builder-category'));
+            }
+        });
+    }
+
+    filterCategoryCards(section) {
+        if (!section) return;
+        const search = section.querySelector('.component-search')?.value.trim().toLowerCase() || '';
+        const filter = section.querySelector('.component-filter')?.value || '';
+
+        section.querySelectorAll('.component-card').forEach(card => {
+            const component = this.findComponent(card.dataset.componentId);
+            const category = this.components[card.dataset.categoryKey];
+            const matchesSearch = !search || component.name.toLowerCase().includes(search);
+            const matchesFilter = !filter || String(component[category.filter_key]) === filter;
+            card.hidden = !matchesSearch || !matchesFilter;
         });
     }
 
@@ -147,7 +234,7 @@ class PCBuilder {
     }
 
     getRequiredWattage(build = this.selectedBuild) {
-        const cpuPower = build.cpu?.tdp || 0;
+        const cpuPower = build.cpu?.max_power || build.cpu?.tdp || 0;
         const gpuPower = build.gpu?.power_req || 0;
         return Math.ceil((cpuPower + gpuPower + 150) * 1.2);
     }
@@ -159,6 +246,9 @@ class PCBuilder {
 
         if (categoryKey === 'motherboard' && cpu && component.socket !== cpu.socket) {
             reasons.push(`Choose a motherboard with the ${cpu.socket} socket for this CPU.`);
+        }
+        if (categoryKey === 'motherboard' && cpu && component.generation_support && !component.generation_support.includes(cpu.generation)) {
+            reasons.push(`This motherboard does not list support for ${cpu.generation} processors.`);
         }
         if (categoryKey === 'cpu' && motherboard && component.socket !== motherboard.socket) {
             reasons.push(`This motherboard requires a ${motherboard.socket} CPU socket.`);
@@ -175,7 +265,8 @@ class PCBuilder {
         if (categoryKey === 'psu' && component.wattage < this.getRequiredWattage(build)) {
             reasons.push(`Your build needs at least ${this.getRequiredWattage(build)}W of PSU capacity.`);
         }
-        if (categoryKey === 'case' && motherboard && component.form_factor !== motherboard.form_factor) {
+        const supportedFormFactors = component.supported_form_factors || [component.form_factor];
+        if (categoryKey === 'case' && motherboard && !supportedFormFactors.includes(motherboard.form_factor)) {
             reasons.push(`Choose a case that supports the ${motherboard.form_factor} motherboard size.`);
         }
         if (categoryKey === 'gpu' && motherboard && component.pcie && motherboard.pcie_slots && !motherboard.pcie_slots.includes(component.pcie)) {
@@ -264,7 +355,7 @@ class PCBuilder {
         // Power Supply Wattage Check
         const psu = this.selectedBuild.psu;
         const gpu = this.selectedBuild.gpu;
-        const cpuPower = cpu?.tdp || 0;
+        const cpuPower = cpu?.max_power || cpu?.tdp || 0;
         const gpuPower = gpu?.power_req || 0;
         const totalPower = cpuPower + gpuPower + 150; // 150W for other components
 
@@ -350,7 +441,7 @@ class PCBuilder {
                     <div class="summary-category">${categoryName}</div>
                     <div class="summary-name">${component.name}</div>
                 </div>
-                <div class="summary-item-price">$${component.price.toFixed(2)}</div>
+                <div class="summary-item-price">${this.formatPrice(component.price)}</div>
                 <button class="remove-btn" data-category="${categoryKey}">Remove</button>
             `;
 
@@ -380,7 +471,7 @@ class PCBuilder {
         // Update total price
         const totalElement = document.getElementById('build-total-price');
         if (totalElement) {
-            totalElement.textContent = `$${totalPrice.toFixed(2)}`;
+            totalElement.textContent = this.formatPrice(totalPrice);
         }
 
         // Update empty state
@@ -392,6 +483,7 @@ class PCBuilder {
     exportBuild() {
         const buildData = {
             timestamp: new Date().toISOString(),
+            currency: this.currency,
             components: this.selectedBuild,
             totalPrice: this.getTotalPrice(),
             compatibility: this.compatibilityIssues

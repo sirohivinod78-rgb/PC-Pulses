@@ -160,11 +160,13 @@ if ( ! function_exists( 'hello_elementor_custom_button_styles' ) ) {
 	 * @return void
 	 */
 	function hello_elementor_custom_button_styles() {
+		$custom_override_path = get_template_directory() . '/custom-override.css';
+
 		wp_enqueue_style(
 			'hello-elementor-custom-override',
 			get_template_directory_uri() . '/custom-override.css',
 			[],
-			HELLO_ELEMENTOR_VERSION
+			filemtime( $custom_override_path )
 		);
 	}
 }
@@ -325,7 +327,7 @@ if ( ! function_exists( 'hello_elementor_pc_builder_scripts' ) ) {
 			'hello-elementor-pc-builder',
 			get_template_directory_uri() . '/pc-builder.js',
 			[],
-			HELLO_ELEMENTOR_VERSION,
+			filemtime( get_template_directory() . '/pc-builder.js' ),
 			true
 		);
 

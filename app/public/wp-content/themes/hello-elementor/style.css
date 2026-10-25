@@ -600,15 +600,14 @@ button,
     border-radius: 8px !important;
 }
 
-/* 3D-style site logo effect */
+/* Embossed site logo effect */
 .site-logo img {
-    transform: perspective(900px) rotateX(6deg) rotateY(-6deg);
-    transform-style: preserve-3d;
-    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.22), 0 2px 12px rgba(0, 0, 0, 0.15);
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.45))
+            drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.18));
+    transition: filter 0.25s ease, transform 0.25s ease;
 }
 .site-logo img:hover {
-    transform: perspective(900px) rotateX(0deg) rotateY(0deg) scale(1.02);
-    box-shadow: 0 24px 42px rgba(0, 0, 0, 0.26), 0 4px 18px rgba(0, 0, 0, 0.18);
+    filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5))
+            drop-shadow(3px 4px 3px rgba(0, 0, 0, 0.22));
+    transform: translateY(-1px);
 }

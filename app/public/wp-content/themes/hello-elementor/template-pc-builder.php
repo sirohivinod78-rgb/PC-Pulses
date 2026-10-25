@@ -46,7 +46,7 @@ get_header();
                 <!-- Build Total -->
                 <div class="build-total">
                     <span class="total-label">Estimated Total</span>
-                    <div id="build-total-price">$0.00</div>
+                    <div id="build-total-price">₹0</div>
                 </div>
 
                 <!-- Action Buttons -->
@@ -78,7 +78,7 @@ get_header();
                 <div class="help-card">
                     <div class="help-icon">💰</div>
                     <h3>Track Pricing</h3>
-                    <p>Real-time pricing updates keep you informed of your total build cost.</p>
+                    <p>Indicative prices are shown in Indian Rupees. Use the retailer links to check current prices and availability before purchasing.</p>
                 </div>
                 <div class="help-card">
                     <div class="help-icon">📊</div>
